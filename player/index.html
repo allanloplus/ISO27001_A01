@@ -1,0 +1,661 @@
+<title>治理 Governance 動畫課</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: a 1280×720 "classroom video" stage scaled to fit, chapter controls underneath.
+   The stage keeps one look in both themes (it is the video frame); the page around it follows the viewer theme. */
+:root {
+  --page: #EEF2F8;
+  --page-ink: #1B2A4A;
+  --page-mute: #5D6B86;
+  --page-line: #CDD6E6;
+  --page-card: #FFFFFF;
+  --accent: #2F5FD0;
+  --display: "Huninn", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "WenQuanYi Zen Hei", sans-serif;
+
+  /* stage palette (fixed) */
+  --ink: #17305F;
+  --cobalt: #2F5FD0;
+  --sky: #A9C2EE;
+  --coral: #F07C5A;
+  --salmon: #F8B79C;
+  --sun: #FFC93C;
+  --mint: #2FA98C;
+  --rose: #E0476B;
+  --paper: #F8FAFD;
+  --grid: #E3E9F4;
+  --mute: #5A6785;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0F1626; --page-ink: #E4EAF6; --page-mute: #98A5C0; --page-line: #2A3550; --page-card: #18223A; --accent: #7EA2F2;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0F1626; --page-ink: #E4EAF6; --page-mute: #98A5C0; --page-line: #2A3550; --page-card: #18223A; --accent: #7EA2F2;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--page); color: var(--page-ink); font-family: var(--body); }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ---------- stage frame ---------- */
+.frame { position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 30, 70, .18); background: var(--paper); }
+#stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; overflow: hidden;
+  font-family: var(--body); color: var(--ink);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--paper); }
+.render .wrap { padding: 0; max-width: none; }
+.render .frame { width: 1280px; height: 720px; border-radius: 0; box-shadow: none; }
+.render .controls, .render .chapters, .render .intro { display: none !important; }
+
+/* top bar */
+.topbar { position: absolute; left: 0; right: 0; top: 0; height: 58px; display: flex; align-items: center; gap: 14px; padding: 0 22px;
+  background: var(--ink); color: #fff; z-index: 5; }
+.brand { font-family: var(--display); font-size: 21px; letter-spacing: .02em; white-space: nowrap; }
+.brand b { color: var(--sun); font-weight: 400; }
+.tabs { display: flex; gap: 6px; margin-left: auto; }
+.tab { font-size: 15px; padding: 5px 12px; border-radius: 999px; color: rgba(255,255,255,.55); border: 1.5px solid rgba(255,255,255,.18); white-space: nowrap; }
+.tab.on { background: var(--sun); color: var(--ink); border-color: var(--sun); font-weight: 700; }
+.prog { position: absolute; left: 0; bottom: -4px; height: 4px; width: 100%; background: rgba(23,48,95,.15); }
+.prog i { display: block; height: 100%; width: 0; background: var(--coral); }
+.chapter-name { position: absolute; right: 22px; top: 68px; font-size: 15px; color: var(--mute); letter-spacing: .04em; z-index: 4; }
+.chapter-name span { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #fff; border: 1.5px solid var(--grid); }
+
+/* scene layer */
+.scene { position: absolute; left: 40px; top: 94px; width: 1200px; height: 390px; visibility: hidden; }
+.rv { will-change: transform, opacity; }
+h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 0 0 14px; color: var(--ink); letter-spacing: .02em; text-wrap: balance; }
+
+/* title */
+.s-title { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-left: 40px; }
+.s-title .kicker { font-size: 21px; color: var(--cobalt); font-weight: 700; letter-spacing: .06em; }
+.s-title h1 { font-family: var(--display); font-weight: 400; font-size: 96px; line-height: 1.05; margin: 14px 0 10px; color: var(--ink); }
+.s-title h1 em { font-style: normal; color: var(--coral); }
+.s-title .sub { font-size: 28px; font-weight: 700; color: #fff; background: var(--cobalt); padding: 8px 20px; border-radius: 10px; }
+.s-title .who { margin-top: 22px; font-size: 19px; color: var(--mute); }
+.s-title .badge { position: absolute; right: 30px; top: 10px; width: 210px; height: 210px; border-radius: 50%; background: var(--sun); color: var(--ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--display); font-size: 30px; line-height: 1.2; text-align: center;
+  box-shadow: 0 0 0 10px rgba(255,201,60,.25); }
+.s-title .badge small { font-size: 18px; font-family: var(--body); font-weight: 700; }
+
+/* map */
+.s-map .lbl { position: absolute; font-size: 15px; color: var(--mute); text-align: center; line-height: 1.25; font-weight: 500; }
+.mbox { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: 900; border-radius: 6px; }
+.m-policy { left: 110px; top: 0; width: 330px; height: 62px; background: #4472C4; color: #fff; font-size: 34px; font-family: var(--display); font-weight: 400; }
+.m-sub { top: 132px; width: 155px; height: 62px; background: var(--sky); color: var(--ink); font-size: 22px; }
+.m-ack { left: 110px; top: 262px; width: 330px; height: 70px; border: 2px dashed #6E8CC8; background: #fff; font-size: 36px; font-family: var(--display); font-weight: 400; border-radius: 14px; }
+.arrow-d { position: absolute; width: 0; height: 0; }
+.arrow-d::before { content: ""; position: absolute; left: -16px; top: 0; width: 32px; height: var(--h); background: var(--c); }
+.arrow-d::after { content: ""; position: absolute; left: -32px; top: var(--h); border-left: 32px solid transparent; border-right: 32px solid transparent; border-top: 26px solid var(--c); }
+.m-51 { position: absolute; left: 110px; top: 100px; width: 330px; text-align: center; font-weight: 900; font-size: 20px; }
+.m-mgr { position: absolute; left: 112px; top: 210px; width: 330px; font-size: 15px; color: var(--mute); text-align: center; }
+.m-big { position: absolute; left: 600px; top: 128px; width: 600px; height: 282px; background: var(--salmon); border-radius: 10px; border: 2px solid #E58E6E; }
+.m-big h4 { margin: 12px 18px; font-size: 24px; font-weight: 900; color: #5B2410; }
+.m-inner { position: absolute; left: 22px; top: 58px; width: 556px; height: 156px; background: #F1F3F7; border: 2px solid #3E5B9A; border-radius: 6px; }
+.m-inner .r { position: absolute; font-weight: 900; font-size: 19px; }
+.m-58 { position: absolute; left: 22px; bottom: 16px; font-weight: 900; font-size: 19px; color: #5B2410; }
+.m-ext { top: 0; width: 280px; height: 70px; background: #fff; border: 2.5px solid var(--cobalt); color: var(--ink); font-size: 22px; border-radius: 10px; }
+.arrow-u { position: absolute; width: 26px; height: 46px; background: #4472C4; top: 80px; }
+.arrow-u::before { content: ""; position: absolute; left: -11px; top: -18px; border-left: 24px solid transparent; border-right: 24px solid transparent; border-bottom: 20px solid #4472C4; }
+.fixnote { position: absolute; left: 912px; top: -22px; background: var(--rose); color: #fff; font-size: 14px; font-weight: 700; padding: 3px 10px; border-radius: 6px; transform: rotate(3deg); white-space: nowrap; }
+
+/* three / methods */
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.pane { background: #fff; border: 2.5px solid var(--ink); border-radius: 18px; padding: 20px 24px; min-height: 250px; box-shadow: 6px 6px 0 var(--ink); position: relative; }
+.pane .ic { width: 74px; height: 74px; border-radius: 20px; display: grid; place-items: center; color: #fff; margin-bottom: 16px; }
+.pane h3 { font-family: var(--display); font-weight: 400; font-size: 32px; margin: 0 0 6px; }
+.pane .who { font-size: 16px; font-weight: 700; letter-spacing: .08em; color: var(--mute); }
+.pane p { font-size: 21px; line-height: 1.55; margin: 12px 0 0; color: #2A3B5E; }
+.pane:nth-child(1) .ic { background: var(--cobalt); }
+.pane:nth-child(2) .ic { background: var(--mint); }
+.pane:nth-child(3) .ic { background: var(--coral); }
+.pane .no { position: absolute; right: 18px; top: 12px; font-family: var(--display); font-size: 46px; color: var(--grid); }
+.s-methods .pane { min-height: 0; padding: 16px 20px; text-align: center; }
+.s-methods .pane h3 { font-size: 28px; }
+.s-methods .pane p { font-size: 19px; margin-top: 6px; }
+.s-methods .pane .ic { margin: 0 auto 8px; border-radius: 50%; width: 70px; height: 70px; }
+.note { margin-top: 18px; text-align: center; font-size: 24px; font-weight: 700; background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 12px; }
+.note b { color: var(--sun); }
+
+/* divider */
+.s-divider { display: flex; align-items: center; gap: 40px; padding-left: 40px; }
+.s-divider .num { font-family: var(--display); font-size: 150px; line-height: 1; color: var(--tone); }
+.s-divider .part { font-size: 26px; font-weight: 900; color: var(--tone); letter-spacing: .2em; }
+.s-divider h2 { font-family: var(--display); font-weight: 400; font-size: 78px; margin: 4px 0 14px; }
+.s-divider p { font-size: 25px; color: var(--mute); margin: 0; }
+.s-divider .stripe { position: absolute; left: -40px; right: -40px; bottom: 26px; height: 16px; background: repeating-linear-gradient(-45deg, var(--tone) 0 16px, transparent 16px 32px); opacity: .5; }
+
+/* control card */
+.s-control { display: grid; grid-template-columns: 290px 1fr; gap: 34px; align-items: start; }
+.s-control .ctl-id { height: 330px; }
+.ctl-id { background: var(--ink); color: #fff; border-radius: 22px; padding: 26px 24px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.ctl-id .code { font-family: var(--display); font-size: 104px; line-height: 1; color: var(--sun); }
+.ctl-id .annex { font-size: 16px; letter-spacing: .14em; color: var(--sky); font-weight: 700; }
+.ctl-id .name { font-size: 31px; font-weight: 900; line-height: 1.3; text-wrap: balance; }
+.ctl-id .ring { position: absolute; right: -60px; bottom: -60px; width: 180px; height: 180px; border-radius: 50%; border: 22px solid rgba(255,255,255,.07); }
+.motto { display: inline-block; font-family: var(--display); font-size: 24px; background: var(--sun); color: var(--ink); padding: 6px 16px; border-radius: 10px; margin-bottom: 12px; transform: rotate(-1deg); }
+.pts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.pts li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; background: #fff; border: 2px solid var(--grid); border-radius: 14px; padding: 8px 16px; font-size: 21px; line-height: 1.38; font-weight: 500; }
+.pts li .k { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--sky); color: var(--ink); font-weight: 900; font-size: 20px; }
+.pts li.now { border-color: var(--coral); box-shadow: 0 0 0 4px rgba(240,124,90,.18); }
+.pts li.now .k { background: var(--coral); color: #fff; }
+
+/* case */
+.casehead { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+.casehead .tag { background: var(--coral); color: #fff; font-weight: 900; font-size: 20px; padding: 6px 14px; border-radius: 8px; }
+.casehead h2 { margin: 0; }
+.strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.panel { background: #fff; border: 2.5px solid var(--ink); border-radius: 14px; padding: 14px 18px; min-height: 270px; position: relative; }
+.panel .pl { display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 25px; margin-bottom: 10px; }
+.panel .pl i { font-style: normal; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-size: 18px; font-family: var(--body); font-weight: 900; }
+.panel p { margin: 0; font-size: 21px; line-height: 1.6; color: #2A3B5E; }
+.panel:nth-child(2) { background: #FFF1EC; }
+.panel:nth-child(3) { background: #EEF4FF; }
+.panel:nth-child(4) { background: #E9F8F3; }
+.panel.now { box-shadow: 6px 6px 0 var(--coral); }
+
+/* audit */
+.s-audit { display: grid; grid-template-columns: 1fr 380px; gap: 30px; }
+.codes { display: flex; gap: 8px; margin: -4px 0 10px; }
+.codes span { background: var(--mint); color: #fff; font-weight: 900; padding: 3px 12px; border-radius: 999px; font-size: 17px; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.checks li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: center; font-size: 19px; line-height: 1.35; background: #fff; border-radius: 10px; padding: 5px 14px; border: 2px solid var(--grid); font-weight: 500; }
+.checks .box { width: 30px; height: 30px; border: 3px solid var(--mint); border-radius: 7px; position: relative; }
+.checks .box svg { position: absolute; left: 1px; top: 0; }
+.checks li.now { border-color: var(--mint); }
+.askcol { display: flex; flex-direction: column; gap: 16px; padding-top: 6px; }
+.askcol .h { font-family: var(--display); font-size: 24px; display: flex; align-items: center; gap: 10px; }
+.ask { position: relative; background: var(--ink); color: #fff; border-radius: 16px; padding: 16px 20px; font-size: 22px; line-height: 1.5; font-weight: 500; }
+.ask::after { content: ""; position: absolute; left: 30px; bottom: -14px; border-left: 14px solid transparent; border-right: 6px solid transparent; border-top: 16px solid var(--ink); }
+.ask b { color: var(--sun); font-weight: 900; margin-right: 6px; }
+
+/* findings */
+.cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.fcard { background: #fff; border: 2.5px solid var(--ink); border-radius: 16px; padding: 14px 18px 16px; position: relative; min-height: 296px; display: flex; flex-direction: column; gap: 10px; }
+.fcard .top { display: flex; align-items: center; justify-content: space-between; }
+.fcard .cd { font-family: var(--display); font-size: 34px; color: var(--ink); }
+.stamp { font-weight: 900; font-size: 17px; border: 3px solid var(--rose); color: var(--rose); padding: 2px 10px; border-radius: 8px; transform: rotate(-6deg); letter-spacing: .06em; }
+.stamp.obs { border-color: #D29A00; color: #B07F00; }
+.fcard .lab { font-size: 15px; font-weight: 900; letter-spacing: .1em; color: var(--mute); }
+.fcard .fact { font-size: 18.5px; line-height: 1.55; margin: 0; }
+.fcard .fix { margin-top: auto; background: #E9F8F3; border-radius: 10px; padding: 8px 12px; font-size: 17.5px; line-height: 1.5; color: #155C4B; font-weight: 500; }
+.fcard .fix b { display: block; font-size: 14px; letter-spacing: .1em; color: var(--mint); }
+.fcard.now { box-shadow: 6px 6px 0 var(--rose); }
+
+/* quiz */
+.s-quiz .qhead { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.s-quiz .qtag { font-family: var(--display); font-size: 24px; background: var(--rose); color: #fff; padding: 6px 16px; border-radius: 999px; }
+.s-quiz .q { font-size: 31px; font-weight: 900; line-height: 1.35; margin: 0 0 14px; max-width: 1100px; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: grid; grid-template-columns: 50px 1fr 60px; align-items: center; gap: 14px; background: #fff; border: 2.5px solid var(--ink); border-radius: 14px; padding: 6px 16px; font-size: 23px; font-weight: 500; }
+.opt .L { width: 42px; height: 42px; border-radius: 12px; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 24px; }
+.opt .mk { font-size: 34px; font-weight: 900; text-align: center; }
+.answered .opt { opacity: .4; }
+.answered .opt.ok { opacity: 1; background: #E2F6EF; border-color: var(--mint); box-shadow: 5px 5px 0 var(--mint); }
+.answered .opt.ok .L { background: var(--mint); }
+.answered .opt.ok .mk { color: var(--mint); }
+.explain { margin-top: 12px; font-size: 21px; font-weight: 700; color: #155C4B; }
+
+/* summary */
+.srows { display: flex; flex-direction: column; gap: 14px; }
+.srow { display: grid; grid-template-columns: 150px 1fr auto; align-items: center; gap: 24px; background: #fff; border: 2.5px solid var(--ink); border-radius: 18px; padding: 10px 24px; box-shadow: 6px 6px 0 var(--ink); }
+.srow .hd { font-family: var(--display); font-size: 44px; color: #fff; background: var(--cobalt); border-radius: 14px; text-align: center; padding: 4px 0; }
+.srow:nth-child(2) .hd { background: var(--mint); }
+.srow:nth-child(3) .hd { background: var(--coral); }
+.srow .tx { font-size: 38px; font-weight: 900; letter-spacing: .06em; }
+.srow .cs { font-size: 18px; font-weight: 700; color: var(--mute); }
+
+/* characters & bubble */
+.char { position: absolute; bottom: 0; width: 204px; height: 241px; z-index: 6; overflow: visible; }
+#allan { left: 6px; }
+#arale { right: 6px; }
+.nametag { position: absolute; bottom: 8px; z-index: 7; font-size: 14px; font-weight: 900; padding: 3px 10px; border-radius: 999px; background: #fff; border: 2px solid var(--grid); color: var(--mute); }
+#tagA { left: 70px; }
+#tagR { right: 80px; }
+.nametag.on { color: #fff; }
+#tagA.on { background: var(--cobalt); border-color: var(--cobalt); }
+#tagR.on { background: var(--rose); border-color: var(--rose); }
+#bubble { position: absolute; left: 240px; right: 240px; bottom: 26px; min-height: 96px; background: #fff; border: 3px solid var(--cobalt); border-radius: 22px;
+  padding: 14px 24px; font-size: 24px; line-height: 1.5; font-weight: 500; color: var(--ink); z-index: 6; display: flex; align-items: center; visibility: hidden; }
+#bubble::before { content: ""; position: absolute; bottom: 24px; width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
+#bubble.A::before { left: -22px; border-right: 22px solid var(--cobalt); }
+#bubble.R { border-color: var(--rose); }
+#bubble.R::before { right: -22px; border-left: 22px solid var(--rose); }
+#bubble .who { position: absolute; top: -15px; left: 22px; font-size: 14px; font-weight: 900; color: #fff; background: var(--cobalt); padding: 2px 10px; border-radius: 999px; letter-spacing: .06em; }
+#bubble.R .who { left: auto; right: 22px; background: var(--rose); }
+.fontwarm { position: absolute; left: -9999px; top: 0; width: 4000px; opacity: 0; pointer-events: none; }
+
+/* intro overlay */
+.intro { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; background: rgba(23,48,95,.35); border: 0; cursor: pointer; padding: 0; font: inherit; }
+.intro span { display: inline-flex; align-items: center; gap: 12px; background: var(--sun); color: #17305F; font-weight: 900; font-size: clamp(16px, 2.6vw, 26px); padding: .7em 1.4em; border-radius: 999px; box-shadow: 0 8px 0 #C99400; }
+.intro:focus-visible span { outline: 4px solid #fff; outline-offset: 4px; }
+
+/* page controls */
+.controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.controls button, .controls select { font: inherit; font-size: 15px; border-radius: 10px; border: 1.5px solid var(--page-line); background: var(--page-card); color: var(--page-ink); padding: 8px 14px; cursor: pointer; }
+.controls button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; min-width: 92px; }
+.controls button:focus-visible, .controls select:focus-visible, #seek:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.seekwrap { flex: 1 1 260px; min-width: 0; display: flex; align-items: center; gap: 10px; }
+#seek { flex: 1; min-width: 0; accent-color: var(--accent); }
+.time { font-variant-numeric: tabular-nums; font-size: 14px; color: var(--page-mute); white-space: nowrap; }
+.chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; }
+.chapters button { text-align: left; font: inherit; font-size: 14px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--page-line); background: var(--page-card); color: var(--page-ink); cursor: pointer; display: flex; gap: 10px; min-width: 0; }
+.chapters button .tm { color: var(--page-mute); font-variant-numeric: tabular-nums; flex: none; }
+.chapters button .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chapters button.on { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.foot { font-size: 13px; color: var(--page-mute); line-height: 1.6; }
+</style>
+
+<div class="wrap">
+  <div class="frame" id="frame">
+    <div id="stage">
+      <div class="topbar">
+        <div class="brand">ISO 27001:2022 ‧ <b>治理 Governance</b></div>
+        <div class="tabs" id="tabs"></div>
+        <div class="prog"><i id="progbar"></i></div>
+      </div>
+      <div class="chapter-name"><span id="chapname"></span></div>
+      <div id="scenes"></div>
+
+      <svg class="char" id="allan" viewBox="0 0 220 260" aria-label="Q版 Allan Lo 講師">
+        <ellipse cx="110" cy="250" rx="62" ry="8" fill="rgba(23,48,95,.18)"/>
+        <g data-part="body">
+          <rect x="86" y="220" width="20" height="24" rx="6" fill="#2A3242"/>
+          <rect x="114" y="220" width="20" height="24" rx="6" fill="#2A3242"/>
+          <ellipse cx="94" cy="246" rx="16" ry="7" fill="#1B1B1F"/>
+          <ellipse cx="128" cy="246" rx="16" ry="7" fill="#1B1B1F"/>
+          <g data-part="armL"><rect x="44" y="166" width="20" height="50" rx="10" fill="#24407E"/><circle cx="54" cy="218" r="10" fill="#FFD9B8"/></g>
+          <path d="M62 168 Q110 150 158 168 L166 226 Q110 236 54 226 Z" fill="#24407E"/>
+          <path d="M94 160 L126 160 L110 198 Z" fill="#fff"/>
+          <path d="M94 160 L110 198 L86 178 Z" fill="#1A2F60"/>
+          <path d="M126 160 L110 198 L134 178 Z" fill="#1A2F60"/>
+          <path d="M106 166 L114 166 L117 188 L110 198 L103 188 Z" fill="#E4483B"/>
+          <rect x="68" y="196" width="16" height="4" rx="2" fill="#FFC93C"/>
+          <g data-part="armR">
+            <line x1="164" y1="222" x2="164" y2="282" stroke="#7A5230" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="164" cy="284" r="5" fill="#E4483B"/>
+            <rect x="154" y="166" width="20" height="50" rx="10" fill="#24407E"/>
+            <circle cx="164" cy="218" r="10" fill="#FFD9B8"/>
+          </g>
+          <g data-part="head">
+            <circle cx="46" cy="102" r="11" fill="#F5C9A4"/>
+            <circle cx="174" cy="102" r="11" fill="#F5C9A4"/>
+            <circle cx="110" cy="98" r="64" fill="#FFD9B8"/>
+            <path d="M46 104 C38 46 74 26 112 28 C152 30 182 54 174 104 C170 86 162 74 150 68 C130 80 98 78 74 62 C66 74 56 86 50 106 Z" fill="#2B2B33"/>
+            <path d="M74 62 C86 50 104 46 120 50" stroke="#4A4A55" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <g data-part="brows">
+              <path d="M74 80 Q87 74 100 80" stroke="#2B2B33" stroke-width="4" fill="none" stroke-linecap="round"/>
+              <path d="M120 80 Q133 74 146 80" stroke="#2B2B33" stroke-width="4" fill="none" stroke-linecap="round"/>
+            </g>
+            <ellipse data-part="eyeL" cx="87" cy="101" rx="4.5" ry="5.5" fill="#1E1E24"/>
+            <ellipse data-part="eyeR" cx="133" cy="101" rx="4.5" ry="5.5" fill="#1E1E24"/>
+            <rect x="69" y="88" width="36" height="25" rx="8" fill="rgba(255,255,255,.18)" stroke="#2B2B33" stroke-width="3.2"/>
+            <rect x="115" y="88" width="36" height="25" rx="8" fill="rgba(255,255,255,.18)" stroke="#2B2B33" stroke-width="3.2"/>
+            <line x1="105" y1="97" x2="115" y2="97" stroke="#2B2B33" stroke-width="3"/>
+            <ellipse cx="66" cy="123" rx="10" ry="6" fill="#FF8F8F" opacity=".45"/>
+            <ellipse cx="154" cy="123" rx="10" ry="6" fill="#FF8F8F" opacity=".45"/>
+            <path data-part="smile" d="M97 128 Q110 139 123 128" stroke="#7A2B2B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <ellipse data-part="mouth" cx="110" cy="132" rx="10" ry="6" fill="#8A2B2B"/>
+          </g>
+        </g>
+      </svg>
+      <div class="nametag" id="tagA">講師 Allan Lo</div>
+
+      <svg class="char" id="arale" viewBox="0 0 220 260" aria-label="Q版助教阿拉蕾">
+        <ellipse cx="110" cy="250" rx="58" ry="8" fill="rgba(23,48,95,.18)"/>
+        <g data-part="body">
+          <rect x="92" y="220" width="14" height="22" rx="5" fill="#FFD9B8"/>
+          <rect x="114" y="220" width="14" height="22" rx="5" fill="#FFD9B8"/>
+          <ellipse cx="97" cy="245" rx="15" ry="7" fill="#E23B3B"/>
+          <ellipse cx="124" cy="245" rx="15" ry="7" fill="#E23B3B"/>
+          <g data-part="armL"><rect x="62" y="170" width="16" height="42" rx="8" fill="#FFF3C4"/><circle cx="70" cy="214" r="9" fill="#FFD9B8"/></g>
+          <g data-part="armR"><rect x="142" y="170" width="16" height="42" rx="8" fill="#FFF3C4"/><circle cx="150" cy="214" r="9" fill="#FFD9B8"/></g>
+          <path d="M78 166 Q110 156 142 166 L140 182 L80 182 Z" fill="#FFF3C4"/>
+          <path d="M72 176 Q110 168 148 176 L160 230 Q110 238 60 230 Z" fill="#3C7BE0"/>
+          <rect x="90" y="166" width="40" height="28" rx="5" fill="#3C7BE0"/>
+          <rect x="100" y="174" width="20" height="13" rx="3" fill="#2E62B8"/>
+          <circle cx="93" cy="170" r="3" fill="#FFC93C"/><circle cx="127" cy="170" r="3" fill="#FFC93C"/>
+          <g data-part="head">
+            <path d="M44 92 Q40 170 62 186 L158 186 Q180 170 176 92 Z" fill="#5B3A8C"/>
+            <circle cx="110" cy="102" r="60" fill="#FFD9B8"/>
+            <path d="M48 70 Q20 50 16 72 Q28 74 22 86 Q38 88 50 82 Z" fill="#fff" stroke="#D5D9E4" stroke-width="2"/>
+            <path d="M172 70 Q200 50 204 72 Q192 74 198 86 Q182 88 170 82 Z" fill="#fff" stroke="#D5D9E4" stroke-width="2"/>
+            <path d="M50 84 Q54 30 110 30 Q166 30 170 84 Z" fill="#E23B3B"/>
+            <path d="M50 84 L170 84 L170 76 Q110 70 50 76 Z" fill="#B82525"/>
+            <circle cx="110" cy="52" r="10" fill="#fff"/><circle cx="110" cy="52" r="5" fill="#FFC93C"/>
+            <path d="M52 82 L168 82 L166 98 L155 90 L146 102 L134 90 L123 102 L111 90 L100 102 L88 90 L77 102 L66 90 L55 100 Z" fill="#5B3A8C"/>
+            <path d="M50 84 Q44 122 54 152 L63 152 Q57 118 61 86 Z" fill="#5B3A8C"/>
+            <path d="M170 84 Q176 122 166 152 L157 152 Q163 118 159 86 Z" fill="#5B3A8C"/>
+            <ellipse data-part="eyeL" cx="86" cy="114" rx="7" ry="9" fill="#2A1E4A"/>
+            <ellipse data-part="eyeR" cx="134" cy="114" rx="7" ry="9" fill="#2A1E4A"/>
+            <circle data-part="hiL" cx="89" cy="110" r="2.6" fill="#fff"/>
+            <circle data-part="hiR" cx="137" cy="110" r="2.6" fill="#fff"/>
+            <circle cx="86" cy="113" r="21" fill="rgba(255,255,255,.22)" stroke="#1E1E1E" stroke-width="4.5"/>
+            <circle cx="134" cy="113" r="21" fill="rgba(255,255,255,.22)" stroke="#1E1E1E" stroke-width="4.5"/>
+            <line x1="107" y1="112" x2="113" y2="112" stroke="#1E1E1E" stroke-width="4"/>
+            <ellipse cx="62" cy="138" rx="9" ry="6" fill="#FF7FA0" opacity=".5"/>
+            <ellipse cx="158" cy="138" rx="9" ry="6" fill="#FF7FA0" opacity=".5"/>
+            <path data-part="smile" d="M99 142 Q110 152 121 142" stroke="#9C2340" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <ellipse data-part="mouth" cx="110" cy="146" rx="10" ry="6" fill="#C2334B"/>
+          </g>
+        </g>
+      </svg>
+      <div class="nametag" id="tagR">助教 阿拉蕾</div>
+
+      <div id="bubble"><span class="who" id="bubwho"></span><span id="bubtext"></span></div>
+      <div class="fontwarm" id="fontwarm" aria-hidden="true"></div>
+    </div>
+    <button class="intro" id="intro" type="button" aria-label="開始播放課程"><span>▶ 開始上課（請開啟聲音）</span></button>
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="play" type="button">▶ 播放</button>
+    <button id="back" type="button" aria-label="上一段">⏮ 上一段</button>
+    <button id="next" type="button" aria-label="下一段">下一段 ⏭</button>
+    <div class="seekwrap">
+      <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="播放進度">
+      <span class="time" id="time">0:00 / 0:00</span>
+    </div>
+    <select id="rate" aria-label="播放速度">
+      <option value="0.9">0.9×</option>
+      <option value="1" selected>1×</option>
+      <option value="1.15">1.15×</option>
+      <option value="1.3">1.3×</option>
+    </select>
+    <button id="full" type="button">全螢幕</button>
+  </div>
+  <div class="chapters" id="chapters"></div>
+  <p class="foot">講師 Allan Lo ｜ 助教 阿拉蕾 ｜ 內容依 ISO/IEC 27001:2022 附錄A 與 ISO/IEC 27002:2022 整理；案例為輔導現場改編，已去識別化。台灣法規通報時限請以主管機關最新公告為準。</p>
+</div>
+
+<audio id="audio" src="lesson.mp3" preload="auto"></audio>
+<script src="lesson-data.js"></script>
+<script>
+(() => {
+  const L = window.LESSON;
+  const RENDER = /[?&]render\b/.test(location.search);
+  if (RENDER) document.documentElement.classList.add("render");
+  const $ = (s, r = document) => r.querySelector(s);
+  const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+  const easeOut = p => 1 - Math.pow(1 - p, 3);
+  const easeBack = p => { const c = 1.6; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+  const fmt = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+
+  /* ---------- icons ---------- */
+  const IC = {
+    gear: '<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/>',
+    lens: '<circle cx="11" cy="11" r="7"/><path d="m21 21-5.2-5.2"/><path d="M8 11h6M11 8v6"/>',
+    warn: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+    doc: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h6"/>',
+    talk: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/><path d="M8 9h8M8 13h5"/>',
+    rec: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h2M7 13h2M7 17h2M12 9h5M12 13h5M12 17h5"/>',
+  };
+  const icon = (n, s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+  const tick = '<svg width="24" height="24" viewBox="0 0 24 24"><path class="tk" d="M4 12.5 9.5 18 20 6" fill="none" stroke="#2FA98C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="26" stroke-dashoffset="26"/></svg>';
+  const rv = (step, html, cls = "", tag = "div", delay = 0) => `<${tag} class="rv ${cls}" data-step="${step}" data-delay="${delay}">${html}</${tag}>`;
+
+  /* ---------- scene builders ---------- */
+  const B = {
+    title: s => `
+      ${rv(0, `<div class="kicker">${s.kicker}</div>`, "", "div", 0)}
+      ${rv(0, `<h1>治理 <em>Governance</em></h1>`, "", "div", .15)}
+      ${rv(0, `<span class="sub">${s.sub}</span>`, "", "div", .35)}
+      ${rv(0, `<div class="who">講師 Allan Lo ｜ 助教 阿拉蕾 ｜ 運作流程篇</div>`, "", "div", .55)}
+      ${rv(0, `<small>附錄A</small>控制屬性<br>運作能力`, "badge", "div", .8)}`,
+    map: () => `
+      ${rv(1, `<div class="lbl" style="left:0;top:4px;width:96px">高階<br>管理階層</div>`)}
+      ${rv(1, "政策", "mbox m-policy")}
+      ${rv(1, `<div class="arrow-d" style="left:275px;top:62px;--h:16px;--c:#4472C4"></div>`)}
+      ${rv(1, `<div class="lbl" style="left:330px;top:62px;width:250px;text-align:left">以文件化資訊提供；於組織內傳達；<br>適當時提供予關注方</div>`)}
+      ${rv(2, `<div class="m-51">5.1 資訊安全政策</div>`)}
+      ${rv(2, `<div class="lbl" style="left:0;top:142px;width:96px">管理階層</div>`)}
+      ${rv(2, "資安政策", "mbox m-sub", "div", .1)}
+      ${rv(2, "主題特定政策", "mbox m-sub", "div", .2)}
+      ${rv(2, `<div class="arrow-d" style="left:187px;top:194px;--h:28px;--c:#A9C2EE"></div><div class="arrow-d" style="left:362px;top:194px;--h:28px;--c:#A9C2EE"></div>`, "", "div", .3)}
+      ${rv(2, `<div class="lbl" style="left:228px;top:198px;width:100px;white-space:nowrap;left:220px">核准‧公告‧溝通</div>`, "", "div", .3)}
+      ${rv(2, "認可與遵循", "mbox m-ack", "div", .45)}
+      ${rv(2, `<div class="lbl" style="left:0;top:276px;width:96px">相關員工<br>與關注方</div>`, "", "div", .45)}
+      ${rv(3, `<h4>5.4 管理階層責任 <span style="font-size:16px;font-weight:700">（高階管理階層 ＋ 管理階層）</span></h4>
+          <div class="m-inner">
+            <div class="r" style="left:18px;top:14px">5.24 資訊安全事故管理規劃及準備</div>
+            <div class="r" style="left:18px;top:62px">➜ 5.2 資訊安全之角色與責任</div>
+            <div class="r" style="left:110px;top:106px">↳ 5.3 職務區隔</div>
+          </div>
+          <div class="m-58">5.8 專案管理之資訊安全</div>`, "m-big")}
+      ${rv(4, "5.5 與權責<br>機關之聯繫", "mbox m-ext", "div", 0)}
+      ${rv(4, "5.6 與特殊<br>關注群組之聯繫", "mbox m-ext", "div", .15)}
+      ${rv(4, `<div class="arrow-u" style="left:727px"></div><div class="arrow-u" style="left:1047px"></div>`, "", "div", .1)}
+      ${rv(4, `原圖標 5.5 ➜ 標準為 5.6`, "fixnote", "div", .6)}`,
+    three: s => `<h2 class="st">${s.title}</h2><div class="cols3">${s.items.map((it, i) => rv(i + 1,
+      `<span class="no">0${i + 1}</span><div class="ic">${icon(it.icon, 40)}</div><div class="who">${it.who}</div><h3>${it.title}</h3><p>${it.desc}</p>`, "pane")).join("")}</div>`,
+    methods: s => `<h2 class="st">${s.title}</h2><div class="cols3">${s.items.map((it, i) => rv(i + 1,
+      `<div class="ic">${icon(it.icon, 44)}</div><h3>${it.title}</h3><p>${it.desc}</p>`, "pane")).join("")}</div>${rv(4, `交叉驗證：<b>文件說的</b> ＝ <b>人員做的</b> ＝ <b>紀錄顯示的</b>`, "note")}`,
+    divider: s => {
+      const tone = { blue: "#2F5FD0", green: "#2FA98C", red: "#E0476B" }[s.tone];
+      return `<div class="stripe"></div>
+        ${rv(0, String({ "第一篇": 1, "第二篇": 2, "第三篇": 3 }[s.part]).padStart(2, "0"), "num")}
+        <div>${rv(0, s.part, "part", "div", .15)}${rv(0, `<h2>${s.title}</h2>`, "", "div", .3)}${rv(0, `<p>${s.desc}</p>`, "", "div", .5)}</div>
+        <style>#sc-${s.id}{--tone:${tone}}</style>`;
+    },
+    control: s => `
+      ${rv(0, `<div class="annex">ISO 27001:2022 附錄A</div><div class="code">${s.code}</div><div class="name">${s.name}</div><div class="ring"></div>`, "ctl-id")}
+      <div>${rv(0, s.motto, "motto", "div", .3)}
+        <ul class="pts">${s.points.map((p, i) => rv(i + 1, `<span class="k">${i + 1}</span><span>${p}</span>`, "", "li")).join("")}</ul></div>`,
+    case: s => `<div class="casehead">${rv(0, s.tag, "tag")}${rv(0, `<h2 class="st">${s.title}</h2>`, "", "div", .15)}</div>
+      <div class="strip">${s.panels.map((p, i) => rv(i + 1, `<div class="pl"><i>${i + 1}</i>${p.label}</div><p>${p.text}</p>`, "panel")).join("")}</div>`,
+    audit: s => `<div>
+        ${rv(0, `<h2 class="st">${s.title}</h2>`)}
+        ${rv(0, `<div class="codes">${s.codes.map(c => `<span>${c}</span>`).join("")}</div>`, "", "div", .2)}
+        <ul class="checks">${s.evidence.map((e, i) => rv(i + 1, `<span class="box">${tick}</span><span>${e}</span>`, "", "li")).join("")}</ul></div>
+      <div class="askcol">${rv(0, `${icon("talk", 28)} 稽核員常問`, "h", "div", .3)}
+        ${s.questions.map((q, i) => rv(s.evidence.length + 1 + i, `<b>Q${i + 1}</b>${q}`, "ask")).join("")}</div>`,
+    findings: s => `<h2 class="st">${s.title}</h2><div class="cards3">${s.cards.map((c, i) => rv(i + 1, `
+        <div class="top"><span class="cd">${c.code}</span><span class="stamp ${c.level.includes("觀察") ? "obs" : ""}">${c.level}</span></div>
+        <div class="lab">缺失事實</div><p class="fact">${c.fact}</p>
+        <div class="fix"><b>改善建議</b>${c.fix}</div>`, "fcard")).join("")}</div>`,
+    quiz: s => `<div class="qhead">${rv(0, `阿拉蕾隨堂考 ${s.id.slice(-1)}／3`, "qtag")}</div>
+      ${rv(0, s.q, "q", "p", .2)}
+      <div class="opts">${s.options.map((o, i) => rv(1, `<span class="L">${"ABC"[i]}</span><span>${o}</span><span class="mk">${i === s.answer ? "✓" : ""}</span>`, i === s.answer ? "opt ok" : "opt", "div", i * .15)).join("")}</div>
+      ${rv(2, s.explain, "explain")}`,
+    summary: s => `<h2 class="st">${s.title}</h2><div class="srows">${s.rows.map((r, i) => rv(i + 1,
+      `<div class="hd">${r.head}</div><div class="tx">${r.text}</div><div class="cs">${r.codes}</div>`, "srow")).join("")}</div>`,
+  };
+
+  /* ---------- build DOM ---------- */
+  const host = $("#scenes");
+  const TABS = ["導論", "作業重點", "稽核重點", "常見缺失", "測驗與總結"];
+  $("#tabs").innerHTML = TABS.map(t => `<span class="tab">${t}</span>`).join("");
+  const tabEls = [...document.querySelectorAll(".tab")];
+  let tabIdx = 0;
+  L.scenes.forEach((sc, i) => {
+    if (sc.layout === "divider") tabIdx++;
+    if (sc.layout === "quiz" || sc.layout === "summary") tabIdx = 4;
+    sc.tab = tabIdx;
+    const el = document.createElement("section");
+    el.className = "scene s-" + sc.layout;
+    el.id = "sc-" + sc.id;
+    el.innerHTML = B[sc.layout](sc);
+    host.appendChild(el);
+    sc.el = el;
+    sc.items = [...el.querySelectorAll("[data-step]")].map(n => ({ n, step: +n.dataset.step, delay: +n.dataset.delay, last: "" , tk: n.querySelector(".tk")}));
+    sc.lines = [];
+    sc.shown = false;
+  });
+  // map-specific absolute positions
+  const mapSc = L.scenes.find(s => s.layout === "map");
+  if (mapSc) {
+    const subs = mapSc.el.querySelectorAll(".m-sub");
+    subs[0].style.left = "110px"; subs[1].style.left = "285px";
+    const ext = mapSc.el.querySelectorAll(".m-ext");
+    ext[0].style.left = "600px"; ext[1].style.left = "920px";
+  }
+  L.lines.forEach((ln, i) => { ln.i = i; L.scenes[ln.scene].lines.push(ln); });
+  // preload every glyph (Google Fonts loads CJK subsets on demand)
+  $("#fontwarm").textContent = JSON.stringify(L).replace(/[\x00-\x7f]/g, "") + " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  $("#fontwarm").innerHTML += '<span style="font-family:var(--display)">' + $("#fontwarm").textContent + "</span>";
+
+  /* ---------- characters ---------- */
+  const rig = id => { const svg = $("#" + id); const q = p => svg.querySelector(`[data-part="${p}"]`);
+    return { svg, body: q("body"), head: q("head"), armL: q("armL"), armR: q("armR"), eyeL: q("eyeL"), eyeR: q("eyeR"), hiL: q("hiL"), hiR: q("hiR"), mouth: q("mouth"), smile: q("smile"), brows: q("brows") }; };
+  const A = rig("allan"), R = rig("arale");
+  const tagA = $("#tagA"), tagR = $("#tagR");
+
+  function mouthLevel(ln, t) {
+    if (!ln || t < ln.start || t > ln.end) return 0;
+    const f = (t - ln.start) * L.fps, i = Math.floor(f), env = ln.env;
+    const a = +(env[i] || 0), b = +(env[i + 1] || 0);
+    return (a + (b - a) * (f - i)) / 9;
+  }
+  function blink(t, off) { const p = (t + off) % 3.9; return p < 0.13 ? 0.15 : 1; }
+
+  function poseAllan(t, ln, speaking, lastReveal) {
+    const m = speaking ? mouthLevel(ln, t) : 0;
+    const bob = Math.sin(t * Math.PI) * 2;
+    const bounce = speaking ? Math.abs(Math.sin(t * 5.2)) * 3 : 0;
+    A.body.setAttribute("transform", `translate(0 ${(bob - bounce).toFixed(2)})`);
+    const tilt = speaking ? Math.sin(t * 1.7) * 4 : Math.sin(t * 0.8) * 1.5 + 3;
+    A.head.setAttribute("transform", `rotate(${tilt.toFixed(2)} 110 160)`);
+    // pointer arm: raise on each new reveal, gesture while talking
+    const since = t - lastReveal;
+    let arm = -28 + (speaking ? Math.sin(t * 3.1) * 10 : 0);
+    if (since >= 0 && since < 1.4) arm = arm + (-95 - arm) * Math.sin(Math.PI * clamp(since / 1.4)) ;
+    A.armR.setAttribute("transform", `rotate(${arm.toFixed(2)} 164 172)`);
+    A.armL.setAttribute("transform", `rotate(${(speaking ? Math.sin(t * 2.3) * 8 : 2).toFixed(2)} 54 172)`);
+    const bl = blink(t, 0.4);
+    A.eyeL.setAttribute("ry", (5.5 * bl).toFixed(2)); A.eyeR.setAttribute("ry", (5.5 * bl).toFixed(2));
+    A.brows.setAttribute("transform", `translate(0 ${speaking ? (-2 - m * 3).toFixed(2) : 0})`);
+    A.mouth.setAttribute("ry", (1.5 + m * 9).toFixed(2));
+    A.mouth.style.display = m > 0.08 ? "" : "none";
+    A.smile.style.display = m > 0.08 ? "none" : "";
+    tagA.classList.toggle("on", speaking);
+  }
+  function poseArale(t, ln, speaking) {
+    const m = speaking ? mouthLevel(ln, t) : 0;
+    let hop = 0;
+    if (speaking && ln) { const s = t - ln.start; if (s >= 0 && s < 0.5) hop = Math.sin(Math.PI * s / 0.5) * 18; }
+    const bob = Math.sin(t * Math.PI * 1.2 + 1) * 2.5 + (speaking ? Math.abs(Math.sin(t * 6)) * 3 : 0);
+    R.body.setAttribute("transform", `translate(0 ${(-bob - hop).toFixed(2)})`);
+    const tilt = speaking ? Math.sin(t * 2.4) * 6 : -4 + Math.sin(t * 0.9) * 2;
+    R.head.setAttribute("transform", `rotate(${tilt.toFixed(2)} 110 170)`);
+    const wave = speaking ? 140 + Math.sin(t * 9) * 18 : 12 + Math.sin(t * 1.3) * 3;
+    R.armL.setAttribute("transform", `rotate(${wave.toFixed(2)} 70 174)`);
+    R.armR.setAttribute("transform", `rotate(${(-(speaking ? 140 + Math.sin(t * 9 + 1.5) * 18 : 12)).toFixed(2)} 150 174)`);
+    const bl = blink(t, 1.9);
+    R.eyeL.setAttribute("ry", (9 * bl).toFixed(2)); R.eyeR.setAttribute("ry", (9 * bl).toFixed(2));
+    R.hiL.style.display = R.hiR.style.display = bl < 1 ? "none" : "";
+    R.mouth.setAttribute("ry", (2 + m * 10).toFixed(2));
+    R.mouth.style.display = m > 0.08 ? "" : "none";
+    R.smile.style.display = m > 0.08 ? "none" : "";
+    tagR.classList.toggle("on", speaking);
+  }
+
+  /* ---------- renderer ---------- */
+  const bubble = $("#bubble"), bubText = $("#bubtext"), bubWho = $("#bubwho");
+  const chap = $("#chapname"), progbar = $("#progbar");
+  let curScene = -1, curLine = -1;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches && !RENDER;
+
+  function sceneAt(t) { let k = 0; for (let i = 0; i < L.scenes.length; i++) if (L.scenes[i].start <= t) k = i; return k; }
+
+  function renderAt(t) {
+    const si = sceneAt(t), sc = L.scenes[si];
+    if (si !== curScene) {
+      if (curScene >= 0) L.scenes[curScene].el.style.visibility = "hidden";
+      sc.el.style.visibility = "visible";
+      curScene = si;
+      chap.textContent = sc.chapter;
+      tabEls.forEach((e, i) => e.classList.toggle("on", i === sc.tab));
+      document.querySelectorAll(".chapters button").forEach((b, i) => b.classList.toggle("on", i === si));
+    }
+    const local = t - sc.start;
+    const pin = easeOut(clamp(local / 0.5)), pout = clamp((sc.end - t) / 0.3);
+    sc.el.style.opacity = Math.min(pin, pout).toFixed(3);
+    sc.el.style.transform = `translateY(${((1 - pin) * 18).toFixed(1)}px)`;
+    // current reveal step
+    let step = 0; sc.reveal.forEach((r, k) => { if (t >= r) step = k; });
+    let lastReveal = -99;
+    sc.reveal.forEach((r, k) => { if (k > 0 && t >= r) lastReveal = r; });
+    for (const it of sc.items) {
+      const at = (it.step === 0 ? sc.start + 0.25 : sc.reveal[it.step]) + it.delay;
+      const p = clamp((t - at) / 0.5);
+      let st;
+      if (p <= 0) st = "0|";
+      else { const e = reduce ? 1 : easeBack(p); st = `${clamp(p * 1.6).toFixed(3)}|translateY(${((1 - e) * 22).toFixed(1)}px) scale(${(0.94 + 0.06 * e).toFixed(3)})`; }
+      if (st !== it.last) { const [o, tr] = st.split("|"); it.n.style.opacity = o; it.n.style.transform = tr; it.last = st; }
+      it.n.classList.toggle("now", it.step > 0 && it.step === step && sc.layout !== "quiz");
+      if (it.tk) it.tk.setAttribute("stroke-dashoffset", (26 * (1 - clamp((t - at - 0.2) / 0.35))).toFixed(1));
+    }
+    if (sc.layout === "quiz") sc.el.classList.toggle("answered", step >= 2);
+    // line / bubble
+    let ln = null;
+    for (const l of sc.lines) if (t >= l.start - 0.12) ln = l;
+    const showBubble = ln && t <= ln.end + 0.6;
+    if (showBubble) {
+      if (ln.i !== curLine) { curLine = ln.i; bubText.textContent = ln.text; bubble.className = ln.spk; bubWho.textContent = ln.spk === "A" ? "Allan Lo 講師" : "助教 阿拉蕾"; }
+      const bp = reduce ? 1 : easeBack(clamp((t - ln.start + 0.12) / 0.25));
+      bubble.style.visibility = "visible";
+      bubble.style.transform = `scale(${(0.92 + 0.08 * bp).toFixed(3)})`;
+      bubble.style.opacity = clamp((t - ln.start + 0.12) / 0.15).toFixed(2);
+    } else bubble.style.visibility = "hidden";
+    const speakingA = !!ln && ln.spk === "A" && t >= ln.start && t <= ln.end;
+    const speakingR = !!ln && ln.spk === "R" && t >= ln.start && t <= ln.end;
+    poseAllan(t, ln, speakingA, lastReveal);
+    poseArale(t, ln, speakingR);
+    progbar.style.width = (100 * t / L.duration).toFixed(2) + "%";
+  }
+  window.renderAt = renderAt;
+  window.lessonDuration = L.duration;
+
+  /* ---------- fit stage ---------- */
+  const frame = $("#frame"), stage = $("#stage");
+  const fit = () => { if (RENDER) return; stage.style.transform = `scale(${frame.clientWidth / 1280})`; };
+  new ResizeObserver(fit).observe(frame); fit();
+
+  renderAt(RENDER ? 0 : 3.2);
+  if (RENDER) { window.lessonReady = document.fonts.ready.then(() => new Promise(r => setTimeout(r, 300))); return; }
+
+  /* ---------- player ---------- */
+  const audio = $("#audio"), playBtn = $("#play"), seek = $("#seek"), time = $("#time"), intro = $("#intro");
+  const chapters = $("#chapters");
+  chapters.innerHTML = L.scenes.map((s, i) => `<button type="button" data-i="${i}"><span class="tm">${fmt(s.start)}</span><span class="nm">${s.chapter}</span></button>`).join("");
+  let raf = 0, started = false;
+  const now = () => audio.currentTime || 0;
+  const loop = () => { renderAt(now()); syncUI(); raf = audio.paused ? 0 : requestAnimationFrame(loop); };
+  function syncUI() {
+    const d = L.duration;
+    time.textContent = `${fmt(now())} / ${fmt(d)}`;
+    if (document.activeElement !== seek) seek.value = Math.round(1000 * now() / d);
+    playBtn.textContent = audio.paused ? "▶ 播放" : "❚❚ 暫停";
+  }
+  function play() { started = true; intro.hidden = true; audio.play().catch(() => {}); }
+  function toggle() { if (audio.paused) play(); else audio.pause(); }
+  function jump(t) { audio.currentTime = clamp(t, 0, L.duration - 0.05); renderAt(now()); syncUI(); }
+  audio.addEventListener("play", () => { if (!raf) raf = requestAnimationFrame(loop); syncUI(); });
+  audio.addEventListener("pause", syncUI);
+  audio.addEventListener("ended", syncUI);
+  audio.addEventListener("seeked", () => { renderAt(now()); syncUI(); });
+  intro.addEventListener("click", play);
+  playBtn.addEventListener("click", toggle);
+  seek.addEventListener("input", () => jump(seek.value / 1000 * L.duration));
+  chapters.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; jump(L.scenes[+b.dataset.i].start + 0.01); if (!started) play(); });
+  $("#back").addEventListener("click", () => { const i = sceneAt(now()); const s = L.scenes[i]; jump(now() - s.start > 2 || i === 0 ? s.start : L.scenes[i - 1].start); });
+  $("#next").addEventListener("click", () => { const i = sceneAt(now()); if (i < L.scenes.length - 1) jump(L.scenes[i + 1].start); });
+  $("#rate").addEventListener("change", e => { audio.playbackRate = +e.target.value; });
+  $("#full").addEventListener("click", () => { const f = frame.requestFullscreen || frame.webkitRequestFullscreen; if (f) Promise.resolve(f.call(frame)).catch(() => {}); });
+  document.addEventListener("fullscreenchange", fit);
+  document.addEventListener("keydown", e => {
+    if (e.target.closest("input, select, button")) return;
+    if (e.code === "Space") { e.preventDefault(); toggle(); }
+    if (e.code === "ArrowRight") jump(now() + 5);
+    if (e.code === "ArrowLeft") jump(now() - 5);
+  });
+  syncUI();
+})();
+</script>

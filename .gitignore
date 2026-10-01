@@ -1,0 +1,4 @@
+build/
+player/.render.html
+node_modules/
+__pycache__/
