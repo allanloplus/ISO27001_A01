@@ -7,6 +7,11 @@ ISO/IEC 27001:2022 附錄A 中，控制屬性「運作能力」歸類為 **治�
 - 串場：Q版 **助教阿拉蕾**（`zh-TW-HsiaoYuNeural`，語調調高）
 - 三個面向：**ISMS 作業重點**、**稽核查核重點**、**常見的缺失**，含 2 則管理實際案例與 3 題隨堂考
 
+## 快速開始
+
+下載整個資料夾後，直接雙擊根目錄的 **`index.html`**，按「▶ 開始上課」即可播放（可點章節跳轉、變速、全螢幕）。
+`index.html` 需與 `player/` 資料夾放在一起；字型需連網載入，離線時會改用系統字型。
+
 ## 課程大綱
 
 | 段落 | 內容 |
@@ -21,8 +26,10 @@ ISO/IEC 27001:2022 附錄A 中，控制屬性「運作能力」歸類為 **治�
 
 | 路徑 | 說明 |
 |---|---|
+| `index.html` | **直接雙擊開啟的動畫播放器**（自動產生，引用 `player/` 內的音檔與資料） |
 | `dist/ISO27001_治理Governance.mp4` | 成品影片（1280×720, 25fps, AAC） |
-| `player/index.html` | 互動播放器：章節跳轉、變速、全螢幕（需與 `lesson.mp3`、`lesson-data.js` 同目錄，以 http 伺服器開啟） |
+| `player/index.html` | 播放器原始檔（Artifact 片段，無 doctype）；修改後執行 `python3 lesson/build_index.py` 更新根目錄 `index.html` |
+| `lesson/build_index.py` | 由 `player/index.html` 產生根目錄 `index.html` |
 | `lesson/lesson.py` | **課程腳本**（台詞、投影片內容）— 修改內容只要改這裡 |
 | `lesson/build_audio.py` | 產生語音、嘴型資料與時間軸 |
 | `lesson/render_video.mjs` | 逐格渲染播放器並合成 MP4 |
@@ -34,7 +41,7 @@ pip install edge-tts                 # 語音合成
 python3 lesson/build_audio.py        # → player/lesson.mp3、player/lesson-data.js、build/lesson.wav
 node lesson/render_video.mjs --shots 30,120   # 先看幾張截圖（build/shots/）
 node lesson/render_video.mjs         # → dist/ISO27001_治理Governance.mp4（需 playwright + ffmpeg）
-python3 -m http.server -d player 8000  # 瀏覽 http://localhost:8000 使用互動播放器
+python3 lesson/build_index.py        # 更新根目錄 index.html（build_audio.py 也會自動執行）
 ```
 
 語音快取在 `build/tts/`，只有改過的台詞會重新合成。

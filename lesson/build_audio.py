@@ -191,6 +191,8 @@ def main():
         f.write("window.LESSON = ")
         json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
         f.write(";\n")
+    import build_index
+    build_index.main()
     print(f"done: {len(scenes)} scenes, {len(lines)} lines, {total / 60:.1f} min")
 
 
