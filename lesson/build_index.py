@@ -15,7 +15,8 @@ def main():
         body = f.read()
     body = body.replace('src="lesson.mp3"', 'src="player/lesson.mp3"')
     body = body.replace('src="lesson-data.js"', 'src="player/lesson-data.js"')
-    assert "player/lesson.mp3" in body and "player/lesson-data.js" in body
+    body = body.replace('src="sprites/sprites.js"', 'src="player/sprites/sprites.js"')
+    assert "player/lesson.mp3" in body and "player/lesson-data.js" in body and "player/sprites/sprites.js" in body
     html = ("<!doctype html>\n<html lang=\"zh-Hant\">\n<head>\n<meta charset=\"utf-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n"
             "<!-- 自動產生：請修改 player/index.html 後執行 python3 lesson/build_index.py -->\n"

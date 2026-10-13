@@ -223,16 +223,18 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
 .srow .cs { font-size: 18px; font-weight: 700; color: var(--mute); }
 
 /* characters & bubble */
-.char { position: absolute; bottom: 0; width: 204px; height: 241px; z-index: 6; overflow: visible; }
-#allan { left: 6px; }
-#arale { right: 6px; }
+.char { position: absolute; bottom: 0; z-index: 6; transform-origin: 50% 100%; }
+#allan { left: 0; width: 243px; height: 250px; }
+#arale { right: 0; width: 278px; height: 237px; }
+.char img, .char svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; visibility: hidden; }
+.char img.on, .char svg { visibility: visible; }
 .nametag { position: absolute; bottom: 8px; z-index: 7; font-size: 14px; font-weight: 900; padding: 3px 10px; border-radius: 999px; background: #fff; border: 2px solid var(--grid); color: var(--mute); }
-#tagA { left: 70px; }
-#tagR { right: 80px; }
+#tagA { left: 72px; }
+#tagR { right: 96px; }
 .nametag.on { color: #fff; }
 #tagA.on { background: var(--cobalt); border-color: var(--cobalt); }
 #tagR.on { background: var(--rose); border-color: var(--rose); }
-#bubble { position: absolute; left: 240px; right: 240px; bottom: 26px; min-height: 96px; background: #fff; border: 3px solid var(--cobalt); border-radius: 22px;
+#bubble { position: absolute; left: 258px; right: 290px; bottom: 26px; min-height: 96px; background: #fff; border: 3px solid var(--cobalt); border-radius: 22px;
   padding: 14px 24px; font-size: 24px; line-height: 1.5; font-weight: 500; color: var(--ink); z-index: 6; display: flex; align-items: center; visibility: hidden; }
 #bubble::before { content: ""; position: absolute; bottom: 24px; width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
 #bubble.A::before { left: -22px; border-right: 22px solid var(--cobalt); }
@@ -274,89 +276,10 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
       <div class="chapter-name"><span id="chapname"></span></div>
       <div id="scenes"></div>
 
-      <svg class="char" id="allan" viewBox="0 0 220 260" aria-label="Q版 Allan Lo 講師">
-        <ellipse cx="110" cy="250" rx="62" ry="8" fill="rgba(23,48,95,.18)"/>
-        <g data-part="body">
-          <rect x="86" y="220" width="20" height="24" rx="6" fill="#2A3242"/>
-          <rect x="114" y="220" width="20" height="24" rx="6" fill="#2A3242"/>
-          <ellipse cx="94" cy="246" rx="16" ry="7" fill="#1B1B1F"/>
-          <ellipse cx="128" cy="246" rx="16" ry="7" fill="#1B1B1F"/>
-          <g data-part="armL"><rect x="44" y="166" width="20" height="50" rx="10" fill="#24407E"/><circle cx="54" cy="218" r="10" fill="#FFD9B8"/></g>
-          <path d="M62 168 Q110 150 158 168 L166 226 Q110 236 54 226 Z" fill="#24407E"/>
-          <path d="M94 160 L126 160 L110 198 Z" fill="#fff"/>
-          <path d="M94 160 L110 198 L86 178 Z" fill="#1A2F60"/>
-          <path d="M126 160 L110 198 L134 178 Z" fill="#1A2F60"/>
-          <path d="M106 166 L114 166 L117 188 L110 198 L103 188 Z" fill="#E4483B"/>
-          <rect x="68" y="196" width="16" height="4" rx="2" fill="#FFC93C"/>
-          <g data-part="armR">
-            <line x1="164" y1="222" x2="164" y2="282" stroke="#7A5230" stroke-width="5" stroke-linecap="round"/>
-            <circle cx="164" cy="284" r="5" fill="#E4483B"/>
-            <rect x="154" y="166" width="20" height="50" rx="10" fill="#24407E"/>
-            <circle cx="164" cy="218" r="10" fill="#FFD9B8"/>
-          </g>
-          <g data-part="head">
-            <circle cx="46" cy="102" r="11" fill="#F5C9A4"/>
-            <circle cx="174" cy="102" r="11" fill="#F5C9A4"/>
-            <circle cx="110" cy="98" r="64" fill="#FFD9B8"/>
-            <path d="M46 104 C38 46 74 26 112 28 C152 30 182 54 174 104 C170 86 162 74 150 68 C130 80 98 78 74 62 C66 74 56 86 50 106 Z" fill="#2B2B33"/>
-            <path d="M74 62 C86 50 104 46 120 50" stroke="#4A4A55" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <g data-part="brows">
-              <path d="M74 80 Q87 74 100 80" stroke="#2B2B33" stroke-width="4" fill="none" stroke-linecap="round"/>
-              <path d="M120 80 Q133 74 146 80" stroke="#2B2B33" stroke-width="4" fill="none" stroke-linecap="round"/>
-            </g>
-            <ellipse data-part="eyeL" cx="87" cy="101" rx="4.5" ry="5.5" fill="#1E1E24"/>
-            <ellipse data-part="eyeR" cx="133" cy="101" rx="4.5" ry="5.5" fill="#1E1E24"/>
-            <rect x="69" y="88" width="36" height="25" rx="8" fill="rgba(255,255,255,.18)" stroke="#2B2B33" stroke-width="3.2"/>
-            <rect x="115" y="88" width="36" height="25" rx="8" fill="rgba(255,255,255,.18)" stroke="#2B2B33" stroke-width="3.2"/>
-            <line x1="105" y1="97" x2="115" y2="97" stroke="#2B2B33" stroke-width="3"/>
-            <ellipse cx="66" cy="123" rx="10" ry="6" fill="#FF8F8F" opacity=".45"/>
-            <ellipse cx="154" cy="123" rx="10" ry="6" fill="#FF8F8F" opacity=".45"/>
-            <path data-part="smile" d="M97 128 Q110 139 123 128" stroke="#7A2B2B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <ellipse data-part="mouth" cx="110" cy="132" rx="10" ry="6" fill="#8A2B2B"/>
-          </g>
-        </g>
-      </svg>
+      <div class="char" id="allan" role="img" aria-label="Q版 Allan Lo 講師"></div>
       <div class="nametag" id="tagA">講師 Allan Lo</div>
 
-      <svg class="char" id="arale" viewBox="0 0 220 260" aria-label="Q版助教阿拉蕾">
-        <ellipse cx="110" cy="250" rx="58" ry="8" fill="rgba(23,48,95,.18)"/>
-        <g data-part="body">
-          <rect x="92" y="220" width="14" height="22" rx="5" fill="#FFD9B8"/>
-          <rect x="114" y="220" width="14" height="22" rx="5" fill="#FFD9B8"/>
-          <ellipse cx="97" cy="245" rx="15" ry="7" fill="#E23B3B"/>
-          <ellipse cx="124" cy="245" rx="15" ry="7" fill="#E23B3B"/>
-          <g data-part="armL"><rect x="62" y="170" width="16" height="42" rx="8" fill="#FFF3C4"/><circle cx="70" cy="214" r="9" fill="#FFD9B8"/></g>
-          <g data-part="armR"><rect x="142" y="170" width="16" height="42" rx="8" fill="#FFF3C4"/><circle cx="150" cy="214" r="9" fill="#FFD9B8"/></g>
-          <path d="M78 166 Q110 156 142 166 L140 182 L80 182 Z" fill="#FFF3C4"/>
-          <path d="M72 176 Q110 168 148 176 L160 230 Q110 238 60 230 Z" fill="#3C7BE0"/>
-          <rect x="90" y="166" width="40" height="28" rx="5" fill="#3C7BE0"/>
-          <rect x="100" y="174" width="20" height="13" rx="3" fill="#2E62B8"/>
-          <circle cx="93" cy="170" r="3" fill="#FFC93C"/><circle cx="127" cy="170" r="3" fill="#FFC93C"/>
-          <g data-part="head">
-            <path d="M44 92 Q40 170 62 186 L158 186 Q180 170 176 92 Z" fill="#5B3A8C"/>
-            <circle cx="110" cy="102" r="60" fill="#FFD9B8"/>
-            <path d="M48 70 Q20 50 16 72 Q28 74 22 86 Q38 88 50 82 Z" fill="#fff" stroke="#D5D9E4" stroke-width="2"/>
-            <path d="M172 70 Q200 50 204 72 Q192 74 198 86 Q182 88 170 82 Z" fill="#fff" stroke="#D5D9E4" stroke-width="2"/>
-            <path d="M50 84 Q54 30 110 30 Q166 30 170 84 Z" fill="#E23B3B"/>
-            <path d="M50 84 L170 84 L170 76 Q110 70 50 76 Z" fill="#B82525"/>
-            <circle cx="110" cy="52" r="10" fill="#fff"/><circle cx="110" cy="52" r="5" fill="#FFC93C"/>
-            <path d="M52 82 L168 82 L166 98 L155 90 L146 102 L134 90 L123 102 L111 90 L100 102 L88 90 L77 102 L66 90 L55 100 Z" fill="#5B3A8C"/>
-            <path d="M50 84 Q44 122 54 152 L63 152 Q57 118 61 86 Z" fill="#5B3A8C"/>
-            <path d="M170 84 Q176 122 166 152 L157 152 Q163 118 159 86 Z" fill="#5B3A8C"/>
-            <ellipse data-part="eyeL" cx="86" cy="114" rx="7" ry="9" fill="#2A1E4A"/>
-            <ellipse data-part="eyeR" cx="134" cy="114" rx="7" ry="9" fill="#2A1E4A"/>
-            <circle data-part="hiL" cx="89" cy="110" r="2.6" fill="#fff"/>
-            <circle data-part="hiR" cx="137" cy="110" r="2.6" fill="#fff"/>
-            <circle cx="86" cy="113" r="21" fill="rgba(255,255,255,.22)" stroke="#1E1E1E" stroke-width="4.5"/>
-            <circle cx="134" cy="113" r="21" fill="rgba(255,255,255,.22)" stroke="#1E1E1E" stroke-width="4.5"/>
-            <line x1="107" y1="112" x2="113" y2="112" stroke="#1E1E1E" stroke-width="4"/>
-            <ellipse cx="62" cy="138" rx="9" ry="6" fill="#FF7FA0" opacity=".5"/>
-            <ellipse cx="158" cy="138" rx="9" ry="6" fill="#FF7FA0" opacity=".5"/>
-            <path data-part="smile" d="M99 142 Q110 152 121 142" stroke="#9C2340" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <ellipse data-part="mouth" cx="110" cy="146" rx="10" ry="6" fill="#C2334B"/>
-          </g>
-        </g>
-      </svg>
+      <div class="char" id="arale" role="img" aria-label="Q版 AI 小助手阿拉蕾"></div>
       <div class="nametag" id="tagR">助教 阿拉蕾</div>
 
       <div id="bubble"><span class="who" id="bubwho"></span><span id="bubtext"></span></div>
@@ -387,6 +310,7 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
 
 <audio id="audio" src="player/lesson.mp3" preload="auto"></audio>
 <script src="player/lesson-data.js"></script>
+<script src="player/sprites/sprites.js"></script>
 <script>
 (() => {
   const L = window.LESSON;
@@ -507,15 +431,60 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
     ext[0].style.left = "600px"; ext[1].style.left = "920px";
   }
   L.lines.forEach((ln, i) => { ln.i = i; L.scenes[ln.scene].lines.push(ln); });
+  L.scenes.forEach(sc => sc.lines.forEach((ln, k) => { if (sc.lines[k + 1]) ln.next = sc.lines[k + 1].start - 0.12; }));
   // preload every glyph (Google Fonts loads CJK subsets on demand)
   $("#fontwarm").textContent = JSON.stringify(L).replace(/[\x00-\x7f]/g, "") + " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   $("#fontwarm").innerHTML += '<span style="font-family:var(--display)">' + $("#fontwarm").textContent + "</span>";
 
-  /* ---------- characters ---------- */
-  const rig = id => { const svg = $("#" + id); const q = p => svg.querySelector(`[data-part="${p}"]`);
-    return { svg, body: q("body"), head: q("head"), armL: q("armL"), armR: q("armR"), eyeL: q("eyeL"), eyeR: q("eyeR"), hiL: q("hiL"), hiR: q("hiR"), mouth: q("mouth"), smile: q("smile"), brows: q("brows") }; };
-  const A = rig("allan"), R = rig("arale");
+  /* ---------- characters (sprites cut from the character sheets) ---------- */
+  const S = window.SPRITES;
+  const sprScript = document.querySelector('script[src$="sprites.js"]');
+  const SPR_BASE = sprScript ? sprScript.getAttribute("src").replace(/sprites\/sprites\.js$/, "") : "";
+  const NS = "http://www.w3.org/2000/svg";
+  function rig(id, key) {
+    const el = $("#" + id), def = S[key], imgs = {};
+    for (const [mood, m] of Object.entries(def.moods)) {
+      const img = new Image(); img.src = SPR_BASE + m.src; img.alt = ""; img.draggable = false;
+      el.appendChild(img); imgs[mood] = img;
+    }
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${def.w} ${def.h}`);
+    svg.innerHTML = `<defs><filter id="soft-${key}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4"/></filter></defs>
+      <ellipse class="patch" filter="url(#soft-${key})"/>
+      <ellipse class="lips" fill="#6B1E26" stroke="#2A1712" stroke-width="2.2"/>
+      <ellipse class="tongue" fill="#E2737B"/>
+      <path class="shut" fill="none" stroke="#3A1E16" stroke-width="2.4" stroke-linecap="round"/>`;
+    el.appendChild(svg);
+    const q = c => svg.querySelector("." + c);
+    return { el, def, imgs, mood: "", patch: q("patch"), lips: q("lips"), tongue: q("tongue"), shut: q("shut"), maxH: key === "A" ? 20 : 22 };
+  }
+  const A = rig("allan", "A"), R = rig("arale", "R");
   const tagA = $("#tagA"), tagR = $("#tagR");
+  const show = (el, on) => { el.style.display = on ? "" : "none"; };
+
+  // expression for each line: speaker mood + listener mood
+  const has = (re, s) => re.test(s);
+  function decorate(sc) {
+    for (const ln of sc.lines) {
+      const tx = ln.text;
+      if (ln.spk === "A") {
+        ln.moodA = "smile";
+        const revealed = sc.reveal.some((r, k) => k > 0 && Math.abs(r - ln.start) < 0.05);
+        if (has(/^哈/, tx)) { ln.leadA = "laugh"; ln.leadUntil = ln.start + 1.2; }
+        else if (revealed) { ln.leadA = "point"; ln.leadUntil = ln.start + 1.8; }
+        ln.moodR = has(/答案是|答對|沒錯|比喻得好|好問題|對，|對！|正是|當然需要/, tx) ? "thumb"
+          : has(/空號|退休|拖到|中了勒索|破窗|生日|遺失/, tx) ? "wow"
+          : has(/^哈/, tx) ? "laugh" : "think";
+      } else {
+        ln.moodR = has(/？/, tx) ? "confused"
+          : has(/啊～/, tx) ? "cry"
+          : has(/嗯洽|耶|拜拜|記起來|準備好|第[一二三]篇|隨堂考/, tx) ? "cheer" : "explain";
+        ln.moodA = has(/？/, tx) ? "think"
+          : has(/嗯洽|拜拜|耶|職業病|說服力|便當|吐槽|最後一頁|記起來|拍拍手/, tx) ? "laugh"
+          : has(/啊～|然後/, tx) ? "wow" : "wink";
+      }
+    }
+  }
 
   function mouthLevel(ln, t) {
     if (!ln || t < ln.start || t > ln.end) return 0;
@@ -523,47 +492,48 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
     const a = +(env[i] || 0), b = +(env[i + 1] || 0);
     return (a + (b - a) * (f - i)) / 9;
   }
-  function blink(t, off) { const p = (t + off) % 3.9; return p < 0.13 ? 0.15 : 1; }
 
-  function poseAllan(t, ln, speaking, lastReveal) {
-    const m = speaking ? mouthLevel(ln, t) : 0;
-    const bob = Math.sin(t * Math.PI) * 2;
-    const bounce = speaking ? Math.abs(Math.sin(t * 5.2)) * 3 : 0;
-    A.body.setAttribute("transform", `translate(0 ${(bob - bounce).toFixed(2)})`);
-    const tilt = speaking ? Math.sin(t * 1.7) * 4 : Math.sin(t * 0.8) * 1.5 + 3;
-    A.head.setAttribute("transform", `rotate(${tilt.toFixed(2)} 110 160)`);
-    // pointer arm: raise on each new reveal, gesture while talking
-    const since = t - lastReveal;
-    let arm = -28 + (speaking ? Math.sin(t * 3.1) * 10 : 0);
-    if (since >= 0 && since < 1.4) arm = arm + (-95 - arm) * Math.sin(Math.PI * clamp(since / 1.4)) ;
-    A.armR.setAttribute("transform", `rotate(${arm.toFixed(2)} 164 172)`);
-    A.armL.setAttribute("transform", `rotate(${(speaking ? Math.sin(t * 2.3) * 8 : 2).toFixed(2)} 54 172)`);
-    const bl = blink(t, 0.4);
-    A.eyeL.setAttribute("ry", (5.5 * bl).toFixed(2)); A.eyeR.setAttribute("ry", (5.5 * bl).toFixed(2));
-    A.brows.setAttribute("transform", `translate(0 ${speaking ? (-2 - m * 3).toFixed(2) : 0})`);
-    A.mouth.setAttribute("ry", (1.5 + m * 9).toFixed(2));
-    A.mouth.style.display = m > 0.08 ? "" : "none";
-    A.smile.style.display = m > 0.08 ? "none" : "";
-    tagA.classList.toggle("on", speaking);
+  function pose(c, t, mood, since, speaking, ln, hop) {
+    if (mood !== c.mood) { for (const [k, img] of Object.entries(c.imgs)) img.classList.toggle("on", k === mood); c.mood = mood; }
+    const pop = since >= 0 && since < 0.2 ? Math.sin(Math.PI * since / 0.2) * 0.035 : 0;
+    const bob = speaking ? Math.abs(Math.sin(t * 5.2)) * 3 : Math.sin(t * Math.PI * 0.8) * 1.5;
+    c.el.style.transform = `translateY(${(-bob - hop).toFixed(2)}px) scale(${(1 + pop).toFixed(3)}, ${(1 - pop * 0.6).toFixed(3)})`;
+    const m = c.def.moods[mood].mouth;
+    const lvl = speaking && m ? mouthLevel(ln, t) : 0;
+    const openNow = lvl > 0.12;
+    const needPatch = !!m && speaking && (openNow || m.open);
+    show(c.patch, needPatch); show(c.lips, needPatch && openNow); show(c.tongue, needPatch && openNow && lvl > 0.35); show(c.shut, needPatch && !openNow);
+    if (!needPatch) return;
+    const W = m.w * (0.62 + 0.28 * lvl), H = 3 + lvl * c.maxH;
+    c.patch.setAttribute("cx", m.cx); c.patch.setAttribute("cy", m.cy + 1);
+    c.patch.setAttribute("rx", m.w / 2 + 6); c.patch.setAttribute("ry", Math.max(m.h / 2 + 5, H / 2 + 3));
+    c.patch.setAttribute("fill", m.skin);
+    if (openNow) {
+      const cy = m.cy + H * 0.12;
+      c.lips.setAttribute("cx", m.cx); c.lips.setAttribute("cy", cy.toFixed(2));
+      c.lips.setAttribute("rx", (W / 2).toFixed(2)); c.lips.setAttribute("ry", (H / 2).toFixed(2));
+      c.tongue.setAttribute("cx", m.cx); c.tongue.setAttribute("cy", (cy + H * 0.22).toFixed(2));
+      c.tongue.setAttribute("rx", (W * 0.3).toFixed(2)); c.tongue.setAttribute("ry", (H * 0.2).toFixed(2));
+    } else {
+      const w = m.w * 0.32;
+      c.shut.setAttribute("d", `M${m.cx - w} ${m.cy} Q${m.cx} ${m.cy + 6} ${m.cx + w} ${m.cy}`);
+    }
   }
-  function poseArale(t, ln, speaking) {
-    const m = speaking ? mouthLevel(ln, t) : 0;
+
+  function poseCharacters(t, sc, ln) {
+    const live = ln && t <= (ln.next ?? ln.end + 0.6);
+    let mA = "smile", mR = "think", sA = t - sc.start, sR = t - sc.start;
+    if (live) {
+      mA = ln.moodA; mR = ln.moodR; sA = sR = t - ln.start + 0.12;
+      if (ln.leadA) { if (t < ln.leadUntil) mA = ln.leadA; else sA = t - ln.leadUntil; }
+    }
+    const spA = !!ln && ln.spk === "A" && t >= ln.start && t <= ln.end;
+    const spR = !!ln && ln.spk === "R" && t >= ln.start && t <= ln.end;
     let hop = 0;
-    if (speaking && ln) { const s = t - ln.start; if (s >= 0 && s < 0.5) hop = Math.sin(Math.PI * s / 0.5) * 18; }
-    const bob = Math.sin(t * Math.PI * 1.2 + 1) * 2.5 + (speaking ? Math.abs(Math.sin(t * 6)) * 3 : 0);
-    R.body.setAttribute("transform", `translate(0 ${(-bob - hop).toFixed(2)})`);
-    const tilt = speaking ? Math.sin(t * 2.4) * 6 : -4 + Math.sin(t * 0.9) * 2;
-    R.head.setAttribute("transform", `rotate(${tilt.toFixed(2)} 110 170)`);
-    const wave = speaking ? 140 + Math.sin(t * 9) * 18 : 12 + Math.sin(t * 1.3) * 3;
-    R.armL.setAttribute("transform", `rotate(${wave.toFixed(2)} 70 174)`);
-    R.armR.setAttribute("transform", `rotate(${(-(speaking ? 140 + Math.sin(t * 9 + 1.5) * 18 : 12)).toFixed(2)} 150 174)`);
-    const bl = blink(t, 1.9);
-    R.eyeL.setAttribute("ry", (9 * bl).toFixed(2)); R.eyeR.setAttribute("ry", (9 * bl).toFixed(2));
-    R.hiL.style.display = R.hiR.style.display = bl < 1 ? "none" : "";
-    R.mouth.setAttribute("ry", (2 + m * 10).toFixed(2));
-    R.mouth.style.display = m > 0.08 ? "" : "none";
-    R.smile.style.display = m > 0.08 ? "none" : "";
-    tagR.classList.toggle("on", speaking);
+    if (spR) { const s = t - ln.start; if (s >= 0 && s < 0.45) hop = Math.sin(Math.PI * s / 0.45) * 12; }
+    pose(A, t, mA, sA, spA, ln, 0);
+    pose(R, t, mR, sR, spR, ln, hop);
+    tagA.classList.toggle("on", spA); tagR.classList.toggle("on", spR);
   }
 
   /* ---------- renderer ---------- */
@@ -590,8 +560,6 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
     sc.el.style.transform = `translateY(${((1 - pin) * 18).toFixed(1)}px)`;
     // current reveal step
     let step = 0; sc.reveal.forEach((r, k) => { if (t >= r) step = k; });
-    let lastReveal = -99;
-    sc.reveal.forEach((r, k) => { if (k > 0 && t >= r) lastReveal = r; });
     for (const it of sc.items) {
       const at = (it.step === 0 ? sc.start + 0.25 : sc.reveal[it.step]) + it.delay;
       const p = clamp((t - at) / 0.5);
@@ -614,10 +582,7 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
       bubble.style.transform = `scale(${(0.92 + 0.08 * bp).toFixed(3)})`;
       bubble.style.opacity = clamp((t - ln.start + 0.12) / 0.15).toFixed(2);
     } else bubble.style.visibility = "hidden";
-    const speakingA = !!ln && ln.spk === "A" && t >= ln.start && t <= ln.end;
-    const speakingR = !!ln && ln.spk === "R" && t >= ln.start && t <= ln.end;
-    poseAllan(t, ln, speakingA, lastReveal);
-    poseArale(t, ln, speakingR);
+    poseCharacters(t, sc, ln);
     progbar.style.width = (100 * t / L.duration).toFixed(2) + "%";
   }
   window.renderAt = renderAt;
@@ -628,8 +593,9 @@ h2.st { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 
   const fit = () => { if (RENDER) return; stage.style.transform = `scale(${frame.clientWidth / 1280})`; };
   new ResizeObserver(fit).observe(frame); fit();
 
+  L.scenes.forEach(decorate);
   renderAt(RENDER ? 0 : 3.2);
-  if (RENDER) { window.lessonReady = document.fonts.ready.then(() => new Promise(r => setTimeout(r, 300))); return; }
+  if (RENDER) { window.lessonReady = Promise.all([document.fonts.ready, ...[...document.querySelectorAll(".char img")].map(i => i.decode().catch(() => {}))]).then(() => new Promise(r => setTimeout(r, 300))); return; }
 
   /* ---------- player ---------- */
   const audio = $("#audio"), playBtn = $("#play"), seek = $("#seek"), time = $("#time"), intro = $("#intro");
